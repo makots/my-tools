@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# MP4の動画ファイルから音声を抽出してMP3に変換する
+# $1: 入力ファイル名
+# $2: 出力ファイル名
+# 例: v2s input.mp4 output.mp3
+#
+# 依存: ffmpeg
+
+ffmpeg -i $1 -q:a 0 -map a $2
