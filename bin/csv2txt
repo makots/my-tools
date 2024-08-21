@@ -1,0 +1,48 @@
+#!/usr/bin/env python3
+#
+# 登録された住所氏名のCSVファイルから、氏名と住所を抽出してテキストファイルに出力する
+# 標準入力からCSVファイルを読み込む
+# 例: cat address.csv | csv2txt > address.txt
+#
+# 依存: Python 3
+#
+# CSVファイルの例:
+# "2024/08/14 18:36:46 JST","10.0.1.97","ID","氏名","シメイ","123-4567","東京都","大阪市","故郷","高級マンション"
+#
+# 出力例:
+# 氏名
+# 〒123-4567
+# 東京都大阪市故郷
+# 高級マンション
+#
+# このスクリプトは、CSVファイルの3フィールド目の値をキーとして、最後に見つかった行を抽出します
+
+import sys
+import csv
+
+def extract_name_address_from_csv():
+    last_entries = {}
+    
+    csv_reader = csv.reader(sys.stdin)
+    
+    for row in csv_reader:
+        key = row[2]  # 3フィールド目の値をキーとして使用
+        last_entries[key] = row  # 最後に見つかった行を保存
+    
+    for row in last_entries.values():
+        # CSVファイルの構成から氏名と住所に関する情報を抽出
+        name = row[3]
+        postal_code = row[5]
+        prefecture = row[6]
+        city = row[7]
+        area = row[8]
+        building = row[9]
+        
+        # フォーマットに従って標準出力に出力
+        print(f"{name}")
+        print(f"〒{postal_code}")
+        print(f"{prefecture}{city}{area}")
+        print(f"{building}\n")
+
+if __name__ == "__main__":
+    extract_name_address_from_csv()
